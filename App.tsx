@@ -14,59 +14,24 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import BackgroundTimer from 'react-native-background-timer';
-import {Colors, Header} from 'react-native/Libraries/NewAppScreen';
-import Sound from 'react-native-sound';
-import top1 from './ios/top1.mp3';
-Sound.setCategory('Playback');
+
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import HomeScreen from './screens/HomeScreen';
+import SideScreen from './screens/SideScreen';
+import SoundContextProvider from './store/context/sound-context';
+const Stack = createNativeStackNavigator();
+
 function App(): JSX.Element {
-  const ding = new Sound(top1, error => {
-    if (error) {
-      console.log('failed to load the sound', error);
-      return;
-    }
-    // when loaded successfully
-    console.log(
-      'duration in seconds: ' +
-        ding.getDuration() +
-        'number of channels: ' +
-        ding.getNumberOfChannels(),
-    );
-  });
-
-  function pressTimerHandler() {
-    // BackgroundTimer.stopBackgroundTimer();
-
-    setTimeout(() => {
-      BackgroundTimer.runBackgroundTimer(() => {
-        //code that will be called every 3 seconds
-        ding.play(success => {
-          if (success) {
-            console.log('successfully finished playing');
-          } else {
-            console.log('playback failed due to audio decoding errors');
-          }
-        });
-      }, 1000);
-    }, 5000);
-  }
-
-  function pressStopHandler() {
-    BackgroundTimer.stopBackgroundTimer();
-    BackgroundTimer.stop();
-  }
-
   return (
-    <SafeAreaView>
-      <StatusBar />
-      <ScrollView contentInsetAdjustmentBehavior="automatic">
-        <Header />
-        <View>
-          <Button onPress={pressTimerHandler} title="Timer 버튼" />
-          <Button onPress={pressStopHandler} title="Stop 버튼" />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <SoundContextProvider>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Home">
+          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="Side" component={SideScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </SoundContextProvider>
   );
 }
 

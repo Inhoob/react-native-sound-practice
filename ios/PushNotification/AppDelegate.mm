@@ -1,11 +1,14 @@
 #import "AppDelegate.h"
-
+#import <Firebase.h>
 #import <React/RCTBundleURLProvider.h>
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  if ([FIRApp defaultApp] == nil) { // 추가 (line:35)
+  [FIRApp configure];
+  }
   self.moduleName = @"PushNotification";
   return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
