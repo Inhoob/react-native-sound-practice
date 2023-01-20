@@ -28,9 +28,12 @@ function SideScreen() {
   }, []);
   let intervalId;
   function pressTimerHandler() {
+    console.log(intervalId);
     if (!intervalId) {
       setTimeout(() => {
-        intervalId = setInterval(() => runSound(), 1000);
+        intervalId = setInterval(() => {
+          runSound();
+        }, 1000);
       }, 5000);
     } else {
       clearInterval(intervalId);

@@ -1,6 +1,9 @@
 import React, {createContext, useState} from 'react';
 import Sound from 'react-native-sound';
 import top1 from '../../ios/top1.mp3';
+
+Sound.setCategory('Playback');
+
 export const SoundContext = createContext({
   sound: {},
   runSound: () => {},

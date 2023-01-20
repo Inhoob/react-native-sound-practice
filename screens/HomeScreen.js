@@ -39,12 +39,12 @@ function HomeScreen({navigation}) {
           }
         });
       }, 1000);
-    }, 1000);
+    }, 5000);
   }
 
   function pressStopHandler() {
     BackgroundTimer.stopBackgroundTimer();
-    BackgroundTimer.stop();
+    // BackgroundTimer.stop();
   }
   return (
     <>
