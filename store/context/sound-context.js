@@ -1,9 +1,10 @@
 import React, {createContext, useState} from 'react';
 import Sound from 'react-native-sound';
 import top1 from '../../ios/top1.mp3';
+import travel from '../../ios/travel.mp3';
 
-Sound.setCategory('Playback');
-
+Sound.setCategory('Playback', false);
+// Sound.setActive(true);
 export const SoundContext = createContext({
   sound: {},
   runSound: () => {},
@@ -23,7 +24,7 @@ function SoundContextProvider({children}) {
         ding.getNumberOfChannels(),
     );
   });
-
+  ding.setVolume(0.5);
   const runSound = () => {
     ding.play(success => {
       if (success) {

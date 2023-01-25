@@ -1,57 +1,39 @@
-import React from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  Button,
-  View,
-  Header,
-} from 'react-native';
-import top1 from '../ios/top1.mp3';
-import Sound from 'react-native-sound';
-import BackgroundTimer from 'react-native-background-timer';
+import React, {useContext} from 'react';
+import {SafeAreaView, ScrollView, StatusBar, Button, View} from 'react-native';
+import {SoundContext} from '../store/context/sound-context';
 function HomeScreen({navigation}) {
-  const ding = new Sound(top1, error => {
-    if (error) {
-      console.log('failed to load the sound', error);
-      return;
-    }
-    // when loaded successfully
-    console.log(
-      'duration in seconds: ' +
-        ding.getDuration() +
-        'number of channels: ' +
-        ding.getNumberOfChannels(),
-    );
-  });
-
+  const soundCtx = useContext(SoundContext);
+  const {runSound} = soundCtx;
+  let intervalId;
+  let timerId;
   function pressTimerHandler() {
-    // BackgroundTimer.stopBackgroundTimer();
-
-    setTimeout(() => {
-      BackgroundTimer.runBackgroundTimer(() => {
-        //code that will be called every 3 seconds
-        ding.play(success => {
-          if (success) {
-            console.log('successfully finished playing');
-          } else {
-            console.log('playback failed due to audio decoding errors');
-          }
-        });
-      }, 1000);
-    }, 5000);
+    if (!intervalId) {
+      timerId = setTimeout(() => {
+        intervalId = setInterval(() => {
+          runSound();
+        }, 1000);
+      }, 5000);
+    }
+    console.log(timerId);
   }
+  // function pressTimerHandler() {
+  //   if (!intervalId) {
+  //     timerId = setTimeout(() => {
+  //       runSound();
+  //     }, 5000);
+  //   }
+  //   console.log(timerId);
+  // }
 
   function pressStopHandler() {
-    BackgroundTimer.stopBackgroundTimer();
-    // BackgroundTimer.stop();
+    console.log(timerId);
+    clearTimeout(timerId);
   }
   return (
     <>
       <SafeAreaView>
         <StatusBar />
         <ScrollView contentInsetAdjustmentBehavior="automatic">
-          {/* <Header /> */}
           <View>
             <Button onPress={pressTimerHandler} title="Timer 버튼" />
             <Button onPress={pressStopHandler} title="Stop 버튼" />
